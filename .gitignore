@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.vscode
+**/local.yml
+**/node_modules
+**/package-lock.json
+**/dist
+**/.DS_Store
