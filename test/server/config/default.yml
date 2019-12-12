@@ -1,0 +1,7 @@
+
+FOO: bar
+# a value that should be override by one of the env specific config files
+ENV_SPECIFIC_VALUE: 
+# will not get loaded since it's not all uppercase
+hello: world
+
