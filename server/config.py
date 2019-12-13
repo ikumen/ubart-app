@@ -24,11 +24,11 @@ def init_app(app, config_dir=None):
 
 
 def _load_configs(env, config_dir):
-    # Where all application config keys are defined, possibly missing value
+    """Loads the default, environment specific, and optionally local configuration
+    files, each overriding the previous respectively.
+    """
     default_config = _load_config_file('default', config_dir)
-    # Environment specific config values, that will override defaults
     env_config = _load_config_file(env, config_dir)
-    # Optional local/one-off values that override everything
     local_config = _load_config_file('local', config_dir, silent=True)
     
     # First we merge required default configs with any environment specific
@@ -64,9 +64,10 @@ def _resolve_missing_configs(path, configs):
     if isinstance(configs, dict):
         for k,v in configs.items():
             if k.isupper():
-                path.extend(['_', k])
+                # build the path to get to this key
+                path.append('_%s' % k)
                 if v is None:
-                    missing_k = ''.join(path[1:])
+                    missing_k = ''.join(path)[1:] # drop the leading _
                     resolved_v = os.environ.get(missing_k)
                     if resolved_v is None:
                         raise KeyError('Missing environment variable: %s' % missing_k)
