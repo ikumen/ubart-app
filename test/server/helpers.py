@@ -1,7 +1,9 @@
 import pytest
+import server
 
 from google.cloud import datastore
 from server.datastore import DatastoreClientFactory
+
 
 class MockFlaskApp(object):
     def __init__(self, env, project_id='ubart-app'):
@@ -9,6 +11,22 @@ class MockFlaskApp(object):
             ENV=env,
             PROJECT_ID=project_id)
 
+
+@pytest.fixture
+def mock_app():
+    return MockFlaskApp('development')
+
+
+@pytest.fixture
+def app():
+    app = server.create_app()
+    with app.app_context():
+        yield app
+
+
+@pytest.fixture
+def app_client(app):
+    return app.test_client()
 
 @pytest.fixture
 def with_clean_datastore(app=None):
