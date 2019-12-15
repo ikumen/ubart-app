@@ -19,7 +19,6 @@ export class Map extends React.Component<MapProps> {
     draggable: false
   }
 
-
   initMap = (mapService: MapService) => {
     mapService.init(this.mapContainerRef.current!, {...this.props});
   }
