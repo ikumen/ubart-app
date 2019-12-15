@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Locate utility box art near you!</title>
+  <meta name="description" content="UBArt::Utility Box Art">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.11.1/css/tachyons.min.css">  
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,600&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .md-large {
+      font-size: 2.4rem;
+    }
+    .layout > header {
+      position: fixed;
+      height: 55px;
+      width: 100%;
+    }
+    .layout {
+      height: 100%;
+      overflow: auto;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .layout > main {
+      padding-top: 55px;
+      flex: 1 0 auto;
+      height: calc(100% - 55px);
+    }
+    .layout > footer {
+      flex-shrink: 0;
+    }
+    .layout > main > div, #gmap {
+      height: 100%;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .lighter-gray { color: #bbb; }
+    .bg-washed-gray { background-color:rgba(0,0,0,.025); }
+  </style>
+</head>
+<body class="bg-white">
+  <div id="app" class="layout fl w-100"></div>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>        
+  <script crossorigin src="https://unpkg.com/react-router-dom@4.3.1/umd/react-router-dom.min.js"></script>        
+</body>
+</html>
