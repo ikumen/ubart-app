@@ -1,15 +1,25 @@
 import React from 'react';
 
 import { Map, ZoomLevel } from '../maps';
+import { RouterProps } from '../support';
+import { Geolocation } from '../geolocation';
 
-export const Home: React.FC = () => (
-  <main className="fl cf w-100 pv0">
-    <Map 
-      id="gmap"
-      draggable={true}
-      zoom={ZoomLevel.City}
-      geolocation={{lng: -118.4484367, lat: 34.04485831074301}}
-    />
-  </main>
-);
 
+type HomeProps = RouterProps & {
+  geolocation?: Geolocation
+}
+
+export class Home extends React.Component<HomeProps> {
+
+  render() {
+    console.log(this.props.geolocation)
+    return <main className="fl cf w-100 pv0">
+      <Map 
+        id="main"
+        draggable={true}
+        zoom={ZoomLevel.City}
+        geolocation={this.props.geolocation}
+      />
+    </main>
+  }
+}
