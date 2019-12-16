@@ -1,6 +1,6 @@
 import { MapOptions, MapService, ZoomLevel, GeolocationChangedHandler } from '../types';
 import { GoogleMapService } from './google-map-service';
-import { loadScript } from '../../utils';
+import { loadScript } from '../../support';
 
 type GoogleMapAutoCompleteItem = {
   autoComplete: google.maps.places.Autocomplete,
@@ -44,7 +44,7 @@ class GoogleMapServiceFactory {
 
   private createMapDiv(id: string) {
     const div = document.createElement('div');
-    div.id = id;
+    div.id = `map-${id}`;
     return div;
   }
 
