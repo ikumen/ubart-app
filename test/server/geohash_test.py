@@ -3,7 +3,7 @@ import pytest
 from server import geohash
 
 def test_should_encode_given_geolocation():
-    h = geohash.encode(34.050535, -118.430299, precision=5)
+    h = geohash.encode(lng=-118.430299, lat=34.050535, precision=5)
     assert h == '9q5c9'
 
     h = geohash.encode(34.050535, -118.430299, precision=6)

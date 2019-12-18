@@ -36,12 +36,20 @@ def test_search_should_return_box_at_given_geohash(box_service, datastore_client
                 address='1234 acme street',
                 geolocation=[34.050535, -118.430299])
 
-    entity = box_service.create(**data)
-    print('saved entity = %s' % entity)
-    query = datastore_client.query(kind=box_service._kind)
-    print("there's only: %s" % len(list(query.fetch())))
+    box_service.create(**data)
     results = box_service.search_by_geohash('9q5c9')
-    print('====>')
-    print(len(results))
-    print(results)
+
+    assert len(results) == 1
+    assert results[0]['address'] == data['address']
+
+def test_search_should_return_box_at_given_geolocation(box_service, datastore_client, with_clean_datastore):
+    data = dict(description='box near westwood',
+                address='1234 acme street',
+                geolocation=[34.050535, -118.430299])
+
+    box_service.create(**data)
+    results = box_service.search_by_geolocation(data['geolocation'])
+
+    assert len(results) == 1
+    assert results[0]['address'] == data['address']
 
