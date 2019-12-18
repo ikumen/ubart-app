@@ -12,7 +12,6 @@ type HomeProps = RouterProps & {
 export class Home extends React.Component<HomeProps> {
 
   render() {
-    console.log(this.props.geolocation)
     return <main className="fl cf w-100 pv0">
       <Map 
         id="main"
