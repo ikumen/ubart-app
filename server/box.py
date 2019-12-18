@@ -21,19 +21,19 @@ class BoxService(EntityService):
         'geolocation', 
         # string: encoded geohash of given geolocation
         'geohash',
-        # string: imgur image id used as the cover
+        # string: imgur photo id used as the cover
         'cover',
-        # array: [imgur_id, ...] 
-        'images'
+        # array: list of photo ids [imgur_id, ...] 
+        'photos'
     ]
-    _exclude_from_indexes = ['description', 'address', 'geolocation', 'cover', 'images']
+    _exclude_from_indexes = ['description', 'address', 'geolocation', 'cover', 'photos']
 
     def preprocess_params(self, entity, kwargs):
-        if 'images' in kwargs:
-            images = kwargs['images']
-            entity.get('images', []).extend(images)
+        if 'photos' in kwargs:
+            photos = kwargs['photos']
+            entity.get('photos', []).extend(photos)
             if entity.get('cover') is None:
-                entity['cover'] = images[0]
+                entity['cover'] = photos[0]
         if 'geolocation' in kwargs:
             entity['geohash'] = encode(*kwargs['geolocation'], 5)
 
@@ -42,7 +42,7 @@ class BoxService(EntityService):
         The search area includes a geohash (of length 5) cell and
         it's surrounding neighbors.
         """
-        self.search_by_geohash(encode(geolocation))
+        return self.search_by_geohash(encode(*geolocation))
 
     def search_by_geohash(self, geohash):
         """Finds all matching boxes near the given geohash (of length 5).
