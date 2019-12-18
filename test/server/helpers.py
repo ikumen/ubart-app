@@ -29,6 +29,12 @@ def app_client(app):
     return app.test_client()
 
 @pytest.fixture
+def datastore_client(app=None):
+    if app is None:
+        app = MockFlaskApp('development')
+    return DatastoreClientFactory(app).get()
+
+@pytest.fixture
 def with_clean_datastore(app=None):
     if app is None:
         app = MockFlaskApp('development')
