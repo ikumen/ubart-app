@@ -23,3 +23,5 @@ export const getCookie = (name: string) => {
   }
   return null;
 }
+
+export const noOp = () => {}

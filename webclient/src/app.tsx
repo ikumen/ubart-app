@@ -52,10 +52,7 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   componentDidMount() {
-    /* 
-     * On initial load we know geolocation has never been set, try to 
-     * force setting it now. 
-     */
+    /* On initial load geolocation not set, try to force setting it now. */
     this.onPropsLocationChange(this.props);
   }
 
@@ -68,7 +65,7 @@ export class App extends React.Component<AppProps, AppState> {
 
   render() {
     return <React.Fragment>
-      <Header />
+      <Header {...this.props} />
       <Switch>
         <Route path={`/:action?/:boxId?`} render={(props) => 
           <Home {...props} geolocation={this.state.geolocation} />}>
