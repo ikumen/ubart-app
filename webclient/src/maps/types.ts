@@ -3,7 +3,10 @@ import { Box } from '../box';
 
 export enum ZoomLevel {
   City = 12,
-  Street = 14,
+  City_S = 13,
+  Neighborhood = 14,
+  Neighborhood_S = 15,
+  Street = 16,
 }
 
 /**
@@ -24,7 +27,7 @@ export interface Marker {
  * 
  * @param marker that cause the event
  */
-export type MarkerEventHandler = (marker: Marker) => void;
+export type MarkerEventHandler = (geolocation: Geolocation, marker: Marker) => void;
 
 /**
  * Handles geolocation changes.

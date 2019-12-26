@@ -75,15 +75,18 @@ export class GoogleMapService implements MapService {
 
     if (m.onDrag) {
       marker.setDraggable(true);
-      marker.addListener('drag', (evt: google.maps.MouseEvent) => m.onDrag!(m));
+      marker.addListener('drag', (evt: google.maps.MouseEvent) => m.onDrag!(this.toGeolocation(evt.latLng), m));
     }
     if (m.onDragEnd) {
       marker.setDraggable(true);
-      marker.addListener('dragend', (evt: google.maps.MouseEvent) => m.onDragEnd!(m));
+      marker.addListener('dragend', (evt: google.maps.MouseEvent) => m.onDragEnd!(this.toGeolocation(evt.latLng), m));
     }
     if (m.onClick) {
       marker.setClickable(true);
-      marker.addListener('click', (evt: google.maps.MouseEvent) => m.onClick!(m));
+      marker.addListener('click', (evt: google.maps.MouseEvent) => {
+        console.log(m)
+        m.onClick!(this.toGeolocation(evt.latLng), m)
+      });
     }
     this.markers.push(marker);
     return this;
