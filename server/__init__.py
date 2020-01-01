@@ -2,8 +2,7 @@ from flask import Flask
 from os import path
 from os.path import dirname
 from werkzeug.exceptions import HTTPException
-from . import support
-from . import config
+from . import support, config, box, photos
 
 
 def create_app(override_settings=None):
@@ -15,6 +14,10 @@ def create_app(override_settings=None):
 
     config.init_app(app)
     support.register_blueprints(app, __name__, __path__)
+    support.cache.init_app(app)
+
+    box.Box.init_app(app)
+    photos.Imgur.init_app(app)
 
     # delegates all HTTPException based errors to support.handler_error 
     app.errorhandler(HTTPException)(support.handle_error)

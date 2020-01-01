@@ -4,8 +4,11 @@ import pkgutil
 import logging
 
 from flask import Blueprint, jsonify
+from flask_caching import Cache
 from werkzeug.exceptions import InternalServerError
 
+
+cache = Cache()
 
 def register_blueprints(app, pkg_name, pkg_path):
     """
