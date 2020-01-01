@@ -92,7 +92,7 @@ class EntityService(metaclass=ABCMeta):
         return self.get_by_key(self._key_w_assigned_id(id))
 
     def get_by_key(self, key):
-        return self._client.get(key)
+        return self.from_entity(self._client.get(key))
 
     def delete(self, id):
         return self._client.delete(self._key_w_assigned_id(id))
@@ -115,6 +115,11 @@ class EntityService(metaclass=ABCMeta):
     def preprocess_params(self, entity, kwargs):
         """Preprocess the params before setting them on the given entity.
         """
+        pass
+
+    @abstractmethod
+    def from_entity(self, entity):
+        """Converts given entity to implementing model."""
         pass
 
     def _save(self, upsert=True, **kwargs):

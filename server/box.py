@@ -17,7 +17,7 @@ class BoxService(EntityService):
         'description', 
         # string: location of box in freeform
         'address',
-        # array: [lat, lng]
+        # dict: {lat, lng}
         'geolocation', 
         # string: encoded geohash of given geolocation
         'geohash',
@@ -35,14 +35,23 @@ class BoxService(EntityService):
             if entity.get('cover') is None:
                 entity['cover'] = photos[0]
         if 'geolocation' in kwargs:
-            entity['geohash'] = encode(*kwargs['geolocation'], 5)
+            entity['geohash'] = encode(**kwargs['geolocation'])
+
+    def from_entity(self, entity):
+        return dict(
+            id=entity.key.id,
+            address=entity['address'],
+            description=entity['description'],
+            geolocation=dict(
+                lat=entity['geolocation']['lat'],
+                lng=entity['geolocation']['lng']))        
 
     def search_by_geolocation(self, geolocation):
         """Find all matching boxes near the given lat/lng.
         The search area includes a geohash (of length 5) cell and
         it's surrounding neighbors.
         """
-        return self.search_by_geohash(encode(*geolocation))
+        return self.search_by_geohash(encode(**geolocation))
 
     def search_by_geohash(self, geohash):
         """Finds all matching boxes near the given geohash (of length 5).
@@ -58,7 +67,9 @@ class BoxService(EntityService):
         for h in hashes:
             query = self._create_query()
             self._apply_filters(query, filters=[('geohash', '=', h)])
-            results.extend(list(query.fetch()))
+            for entity in list(query.fetch()):
+                results.append(self.from_entity(entity))
         return results
         
 
+Box = BoxService()
