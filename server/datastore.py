@@ -102,14 +102,14 @@ class EntityService(metaclass=ABCMeta):
         preprocessing and checks if in "_fields" list. Override to provide
         custom create logic.
         """
-        return self._save(**kwargs)
+        return self.from_entity(self._save(**kwargs))
 
     def update(self, **kwargs):
         """Default implementation simply saves all passed in params after
         preprocessing and checks if in "_fields" list. Override to provide
         custom update logic.
         """
-        return self._save(**kwargs)
+        return self.from_entity(self._save(**kwargs))
 
     @abstractmethod
     def preprocess_params(self, entity, kwargs):
