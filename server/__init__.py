@@ -1,8 +1,14 @@
+import logging
+
 from flask import Flask
 from os import path
 from os.path import dirname
 from werkzeug.exceptions import HTTPException
-from . import support, config, box, photos
+from . import support, config, box, photos, pubsub
+
+# setup basic logging
+logging.basicConfig(format='[%(asctime)s] [%(levelname)-8s] %(name)s: %(message)s', level=logging.DEBUG)
+log = logging.getLogger(__name__)
 
 
 def create_app(override_settings=None):
@@ -18,6 +24,7 @@ def create_app(override_settings=None):
 
     box.Box.init_app(app)
     photos.Imgur.init_app(app)
+    pubsub.PubSub.init_app(app)
 
     # delegates all HTTPException based errors to support.handler_error 
     app.errorhandler(HTTPException)(support.handle_error)
