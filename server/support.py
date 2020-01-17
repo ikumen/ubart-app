@@ -10,6 +10,8 @@ from werkzeug.exceptions import InternalServerError
 
 cache = Cache()
 
+PUBSUB_ENCODING = 'utf-8'
+
 def register_blueprints(app, pkg_name, pkg_path):
     """
     Traverse the project modules looking for any Blueprint instances 

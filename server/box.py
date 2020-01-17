@@ -2,14 +2,14 @@ import logging
 
 from google.cloud import datastore
 
-from .geohash import neighbors, encode
-from .datastore import EntityService
+from .datastore import EntityStore
+from . import geohash
 
 
 log = logging.getLogger(__name__)
 
 
-class BoxService(EntityService):
+class BoxStore(EntityStore):
     _kind = 'Box'
     _id = 'id'
     _fields = [
@@ -21,27 +21,30 @@ class BoxService(EntityService):
         'geolocation', 
         # string: encoded geohash of given geolocation
         'geohash',
-        # string: imgur photo id used as the cover
+        # string: imgur image id used as the cover
         'cover',
-        # array: list of photo ids [imgur_id, ...] 
-        'photos'
+        # array: list of image ids [imgur_id, ...] 
+        'images'
     ]
-    _exclude_from_indexes = ['description', 'address', 'geolocation', 'cover', 'photos']
+    _exclude_from_indexes = ['description', 'address', 'geolocation', 'cover', 'images']
 
-    def preprocess_params(self, entity, kwargs):
-        if 'photos' in kwargs:
-            photos = kwargs['photos']
-            entity.get('photos', []).extend(photos)
-            if entity.get('cover') is None:
-                entity['cover'] = photos[0]
+    def set_params(self, entity, kwargs):
+        if 'images' in kwargs:
+            images = entity.get('images', [])
+            images.extend(kwargs['images'])
+            kwargs['images'] = images
+            kwargs['cover'] = images[0]['id']
         if 'geolocation' in kwargs:
-            entity['geohash'] = encode(**kwargs['geolocation'])
+            kwargs['geohash'] = geohash.encode(**kwargs['geolocation'])
+        super().set_params(entity, kwargs)
 
     def from_entity(self, entity):
         return dict(
             id=entity.key.id,
             address=entity['address'],
-            description=entity['description'],
+            description=entity.get('description', None),
+            images=entity.get('images', []),
+            cover=entity.get('cover', None),
             geolocation=dict(
                 lat=entity['geolocation']['lat'],
                 lng=entity['geolocation']['lng']))        
@@ -51,17 +54,17 @@ class BoxService(EntityService):
         The search area includes a geohash (of length 5) cell and
         it's surrounding neighbors.
         """
-        return self.search_by_geohash(encode(**geolocation))
+        return self.search_by_geohash(geohash.encode(**geolocation))
 
-    def search_by_geohash(self, geohash):
+    def search_by_geohash(self, gh):
         """Finds all matching boxes near the given geohash (of length 5).
         The search area includes the given geohash cell and it's 
         surrounding neighbors.
         """
-        if len(geohash) != 5:
+        if len(gh) != 5:
             raise ValueError('Only geohash cells of length 5 are supported!')
-        hashes = neighbors(geohash)
-        hashes.append(geohash)
+        hashes = geohash.neighbors(gh)
+        hashes.append(gh)
 
         results = []
         for h in hashes:
@@ -71,5 +74,3 @@ class BoxService(EntityService):
                 results.append(self.from_entity(entity))
         return results
         
-
-Box = BoxService()

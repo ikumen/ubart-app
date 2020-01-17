@@ -4,7 +4,6 @@ import requests
 from abc import ABCMeta, abstractmethod
 from google.auth import credentials
 from google.cloud import datastore
-from .support import AppError
 
 
 log = logging.getLogger(__name__)
@@ -55,7 +54,7 @@ class DatastoreClientFactory(object):
         return self.client
 
 
-class EntityService(metaclass=ABCMeta):
+class EntityStore(metaclass=ABCMeta):
     _kind = None
     _id = 'id'
     _fields = []
@@ -89,10 +88,10 @@ class EntityService(metaclass=ABCMeta):
                 entity[k] = v
     
     def get(self, id):
-        return self.get_by_key(self._key_w_assigned_id(id))
+        return self.from_entity(self._get_by_key(self._key_w_assigned_id(id)))
 
-    def get_by_key(self, key):
-        return self.from_entity(self._client.get(key))
+    def _get_by_key(self, key):
+        return self._client.get(key)
 
     def delete(self, id):
         return self._client.delete(self._key_w_assigned_id(id))
@@ -112,17 +111,11 @@ class EntityService(metaclass=ABCMeta):
         return self.from_entity(self._save(**kwargs))
 
     @abstractmethod
-    def preprocess_params(self, entity, kwargs):
-        """Preprocess the params before setting them on the given entity.
-        """
-        pass
-
-    @abstractmethod
     def from_entity(self, entity):
         """Converts given entity to implementing model."""
         pass
 
-    def _save(self, upsert=True, **kwargs):
+    def _save(self, **kwargs):
         """Generic save/upsert function, handles assigned and auto-generated
         id scenarios.
         """
@@ -132,14 +125,13 @@ class EntityService(metaclass=ABCMeta):
         with self._client.transaction():
             if id is not None:
                 # Given an id, try to look up entity for updating
-                entity = self.get_by_key(key)
-                if entity is None and not upsert:
+                entity = self._get_by_key(key)
+                if entity is None:
                     raise LookupError('Entity not found for given id: %s' % id)
             if entity is None:
                 # No entity was found, just create a new entity to insert
                 entity = datastore.Entity(key=key, exclude_from_indexes=self._exclude_from_indexes)
             # We have an entity now (blank or pulled from db), let's update it
-            self.preprocess_params(entity, kwargs)
             self.set_params(entity, kwargs)
             self._client.put(entity)
         return entity

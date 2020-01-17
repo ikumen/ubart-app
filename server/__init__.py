@@ -4,11 +4,18 @@ from flask import Flask
 from os import path
 from os.path import dirname
 from werkzeug.exceptions import HTTPException
-from . import support, config, box, photos, pubsub
+from . import support, config, box, pubsub, imgur, vision
+
 
 # setup basic logging
 logging.basicConfig(format='[%(asctime)s] [%(levelname)-8s] %(name)s: %(message)s', level=logging.DEBUG)
 log = logging.getLogger(__name__)
+
+# Let's create some global services
+imgur_service = imgur.ImgurService()
+pubsub_service = pubsub.PubSubService()
+box_store = box.BoxStore()
+vision_service = vision.VisionService()
 
 
 def create_app(override_settings=None):
@@ -22,9 +29,9 @@ def create_app(override_settings=None):
     support.register_blueprints(app, __name__, __path__)
     support.cache.init_app(app)
 
-    box.Box.init_app(app)
-    photos.Imgur.init_app(app)
-    pubsub.PubSub.init_app(app)
+    imgur_service.init_app(app)
+    pubsub_service.init_app(app)
+    box_store.init_app(app)
 
     # delegates all HTTPException based errors to support.handler_error 
     app.errorhandler(HTTPException)(support.handle_error)
