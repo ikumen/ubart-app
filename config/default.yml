@@ -1,0 +1,30 @@
+DEBUG: True
+ENV: development
+
+SECRET_KEY: 
+CACHE_TYPE: simple
+
+PROJECT_ID: ubartapp
+VERSION: 0.0.1
+
+IMGUR:
+  AUTH: 
+    CLIENT_ID: 
+    USER: 
+    USER_ACCESS_TOKEN: 
+    USER_REFRESH_TOKEN: 
+  ENDPOINTS:
+    GET_ALBUMS: https://api.imgur.com/3/account/%s/albums
+    POST_ALBUM: https://api.imgur.com/3/album
+    ADD_ALBUM_IMAGE: https://api.imgur.com/3/album/%s/add
+    REMOVE_ALBUM_IMAGE: https://api.imgur.com/3/album/%s/remove_images
+    DELETE_IMAGE: https://api.imgur.com/3/image/%s
+    GET_ALBUM_IMAGES: https://api.imgur.com/3/album/%s/images
+  ALBUMS: 
+    UBART-UPLOADED: Images just uploaded, waiting for review
+    UBART-ACCEPTED: Images that were reviewed and accepted
+    UBART-REJECTED: Images that were reviewed and rejected (e.g, contains nsfw content)
+
+PUBSUB:
+  TOPIC: ubart
+  VERIFICATION_TOKEN: 
