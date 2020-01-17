@@ -1,7 +1,7 @@
 import React from 'react';
 import './view-box.css';
 
-import { Box, Photo } from "./box";
+import { Box, Image } from "./box";
 import { boxService } from '.';
 import { Dialog } from '../support';
 import { Uploader } from '../support/uploader';
@@ -16,22 +16,22 @@ export type ViewBoxDialogState = {
   // TODO: rename to showAddDialog
   showDialog: boolean,
   startUpload: boolean,
-  selectedPhoto: number,
-  photos: Photo[]
+  selectedImage: number,
+  images: Image[]
 }
 
 export class ViewBoxDialog extends React.Component<ViewBoxDialogProps, ViewBoxDialogState> {
   state: ViewBoxDialogState = {
     showDialog: false,
-    selectedPhoto: 0,
+    selectedImage: 0,
     startUpload: false,
-    photos: []
+    images: []
   }
 
-  loadPhotos = (box: Box) => {
+  loadImages = (box: Box) => {
     if (box) {
       //console.log('box ===>', box)
-      //boxService.photos(box.id!).then(photos => this.setState({photos}));
+      //boxService.images(box.id!).then(images => this.setState({images}));
     }
   }
 
@@ -40,12 +40,12 @@ export class ViewBoxDialog extends React.Component<ViewBoxDialogProps, ViewBoxDi
   }
 
   componentDidMount() {
-    this.loadPhotos(this.props.box);
+    this.loadImages(this.props.box);
   }
 
   render() {
     const { box } = this.props;
-    const { showDialog, startUpload, photos, selectedPhoto } = this.state;
+    const { showDialog, startUpload, images, selectedImage } = this.state;
 
     return (
       <Dialog
@@ -55,19 +55,19 @@ export class ViewBoxDialog extends React.Component<ViewBoxDialogProps, ViewBoxDi
       >
         <div className="fl w-100 pv0 ph1 ma0 bg-near-white">
           <div className="fl center w-100 bg-black pa2 pt3">
-            {(photos && photos.length)
-              ? <img src={`https://i.imgur.com/${photos[selectedPhoto].id}.jpg`} className="img-view w-100"/>
-              : <div className="flex justify-center"><h3 className="white">Select <u>Add</u> below to upload photos</h3></div>
+            {(images && images.length)
+              ? <img src={`https://i.imgur.com/${images[selectedImage].id}.jpg`} className="img-view w-100"/>
+              : <div className="flex justify-center"><h3 className="white">Select <u>Add</u> below to upload images</h3></div>
             }
           </div>
         
           <div hidden={showDialog} className="fl w-100">
             <div className="flex justify-center bg-black-90 pa3">
               <div className="nowrap overflow-x-auto tr">
-                {photos.map((photo: Photo, i: number) => 
-                  <img key={photo.id} 
-                    onClick={() => this.setState({selectedPhoto: i})} 
-                    className="thumbnail" src={`https://i.imgur.com/${photo.id}s.jpg`}
+                {images.map((image: Image, i: number) => 
+                  <img key={image.id} 
+                    onClick={() => this.setState({selectedImage: i})} 
+                    className="thumbnail" src={`https://i.imgur.com/${image.id}s.jpg`}
                   />  
                 )}
               </div>

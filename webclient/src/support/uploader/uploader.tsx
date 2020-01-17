@@ -96,11 +96,11 @@ export class Uploader extends React.Component<UploaderProps, UploaderState> {
   render() {
     return <div>
       <label className="fl fw6 gray">
-        Photos: <i className="fw3 f6">({this.props.maxFiles} max)</i>
+        Images: <i className="fw3 f6">({this.props.maxFiles} max)</i>
       </label>
     
       <label htmlFor="files" className="link dim dib ml2 f7 pa1 ph2 br2 white button bg-green pointer">
-        Select photos
+        Select images
       </label>
       
       <input type="file" id="files" multiple accept="image/*" 

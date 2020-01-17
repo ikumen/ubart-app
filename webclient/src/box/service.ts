@@ -12,8 +12,8 @@ export class BoxService extends Service<Box, string> {
     return super.list({geo: `${geolocation.lat},${geolocation.lng}`});
   }
 
-  photos(boxId: string) {
-    return super.doFetch(`${this.baseEndPoint}/${boxId}/photos`);
+  images(boxId: string) {
+    return super.doFetch(`${this.baseEndPoint}/${boxId}/images`);
   }
 
   upload(data: FormData) {

@@ -129,7 +129,7 @@ export class AddBoxDialog
 
       <div className="fl w-100 pv0 ph0 ma0 bg-near-white">
         <h3 className="fl black-70 fw5 w-100 pv0 ph2 mv0">
-          Help grow the <span className="fw6 f3 link gold">ubart</span> database, submit a box and photos.
+          Help grow the <span className="fw6 f3 link gold">ubart</span> database, submit a box and images.
         </h3>
 
         <section className="fl w-100 pt3">
