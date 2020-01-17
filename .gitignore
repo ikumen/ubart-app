@@ -135,3 +135,5 @@ dmypy.json
 **/package-lock.json
 **/dist
 **/.DS_Store
+.data
+sandbox

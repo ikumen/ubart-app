@@ -49,6 +49,7 @@ def _merge_dicts(to_dict, from_dict):
 
 def _load_config_file(name, config_dir, silent=False):
     try:
+        log.info(os.path.join(config_dir, '%s.yml' % name))
         config_file = os.path.join(config_dir, '%s.yml' % name)
         with open(config_file) as f:
             return yaml.load(f, Loader=yaml.FullLoader)

@@ -84,7 +84,6 @@ export class GoogleMapService implements MapService {
     if (m.onClick) {
       marker.setClickable(true);
       marker.addListener('click', (evt: google.maps.MouseEvent) => {
-        console.log(m)
         m.onClick!(this.toGeolocation(evt.latLng), m)
       });
     }

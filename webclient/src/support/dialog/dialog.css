@@ -22,10 +22,6 @@
   transform: translate(-50%, -50%);
 }
 
-.dialog > main > header {
-  /*  */
-}
-
 /* make sure all uses of modal wrap their content in div */
 .dialog > main > div {
   height: 100%;
