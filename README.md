@@ -9,6 +9,6 @@ Overall it's a React SPA talking to a Flask server and various services, includi
 
 - [App Engine](https://cloud.google.com/appengine/) managed platform hosting the app
 - [PubSub](https://cloud.google.com/pubsub/) for passing events between app components
-- [Vision AI](https://cloud.google.com/vision/) for ensuring uploaded images are safe
+- [Vision AI](https://cloud.google.com/vision/) for ensuring uploaded photos are safe
 - [Imgur](https://imgur.com/) for image hosting
 

@@ -130,6 +130,7 @@ dmypy.json
 
 .vscode
 **/local.yml
+**/production.yml
 **/node_modules
 **/package-lock.json
 **/dist
