@@ -68,8 +68,8 @@ class BoxStore(EntityStore):
         The search area includes the given geohash cell and it's 
         surrounding neighbors.
         """
-        if len(gh) != 5:
-            raise ValueError('Only geohash cells of length 5 are supported!')
+        if len(gh) != geohash.DEFAULT_PRECISION:
+            raise ValueError('Only geohash cells of length %s are supported!' % geohash.DEFAULT_PRECISION)
         hashes = geohash.neighbors(gh)
         hashes.append(gh)
 

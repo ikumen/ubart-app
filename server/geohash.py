@@ -1,5 +1,14 @@
+"""
+Functions for building geohash (https://en.wikipedia.org/wiki/Geohash) from 
+geolocation of a box. Since GCP datastore does not support GIS search, geohashes 
+allow for searching box by geolocation based on simple datastore filtering of 
+the geohash value.
 
-DEFAULT_PRECISION = 5
+The geohash encoding/decoding and associated functions below are by:
+(c) Chris Veness 2014-2019 / MIT Licence
+https://www.movable-type.co.uk/scripts/geohash.html
+"""
+DEFAULT_PRECISION = 4
 MAX_PRECISION = 22
 
 BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz'
