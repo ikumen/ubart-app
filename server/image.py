@@ -2,6 +2,7 @@ import requests
 import logging
 import json
 import base64
+import traceback
 
 from flask import Blueprint, request, current_app, jsonify
 from concurrent import futures

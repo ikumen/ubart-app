@@ -1,4 +1,5 @@
 import logging
+import traceback
 
 from google.cloud import vision
 
