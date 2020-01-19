@@ -1,6 +1,6 @@
 import { MapOptions, MapService, ZoomLevel, GeolocationChangedHandler } from '../types';
 import { GoogleMapService } from './google-map-service';
-import { loadScript } from '../../support';
+import { loadScript, getCookie } from '../../support';
 
 type GoogleMapAutoCompleteItem = {
   autoComplete: google.maps.places.Autocomplete,
@@ -85,8 +85,7 @@ class GoogleMapServiceFactory {
     }
 
     const google = (window as any).google || {};
-    //const mapApiKey = getCookie('mapApiKey') || '';
-    const mapApiKey = '';
+    const mapApiKey = getCookie('mapApiKey') || '';
     const src = `https://maps.googleapis.com/maps/api/js?key=${mapApiKey}&libraries=places`;
   
     if (!google.maps) {

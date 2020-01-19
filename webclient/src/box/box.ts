@@ -8,10 +8,12 @@ export interface Box {
   geolocation: Geolocation,
   user?: string,
   cover?: string,
-  images?: string[]
+  images?: Image[]
 }
 
 export interface Image {
   id: string,
+  datetime: string,
+  type: string,
   user?: string
 }

@@ -16,8 +16,7 @@ export type ViewBoxDialogState = {
   // TODO: rename to showAddDialog
   showDialog: boolean,
   startUpload: boolean,
-  selectedImage: number,
-  images: Image[]
+  selectedImage: number
 }
 
 export class ViewBoxDialog extends React.Component<ViewBoxDialogProps, ViewBoxDialogState> {
@@ -25,27 +24,15 @@ export class ViewBoxDialog extends React.Component<ViewBoxDialogProps, ViewBoxDi
     showDialog: false,
     selectedImage: 0,
     startUpload: false,
-    images: []
-  }
-
-  loadImages = (box: Box) => {
-    if (box) {
-      //console.log('box ===>', box)
-      //boxService.images(box.id!).then(images => this.setState({images}));
-    }
   }
 
   onUploadDone = (box: Box) => {
     this.setState({showDialog: false})
   }
 
-  componentDidMount() {
-    this.loadImages(this.props.box);
-  }
-
   render() {
     const { box } = this.props;
-    const { showDialog, startUpload, images, selectedImage } = this.state;
+    const { showDialog, startUpload, selectedImage } = this.state;
 
     return (
       <Dialog
@@ -55,8 +42,8 @@ export class ViewBoxDialog extends React.Component<ViewBoxDialogProps, ViewBoxDi
       >
         <div className="fl w-100 pv0 ph1 ma0 bg-near-white">
           <div className="fl center w-100 bg-black pa2 pt3">
-            {(images && images.length)
-              ? <img src={`https://i.imgur.com/${images[selectedImage].id}.jpg`} className="img-view w-100"/>
+            {(box.images && box.images.length)
+              ? <img src={`https://i.imgur.com/${box.images[selectedImage].id}.jpg`} className="img-view w-100"/>
               : <div className="flex justify-center"><h3 className="white">Select <u>Add</u> below to upload images</h3></div>
             }
           </div>
@@ -64,7 +51,7 @@ export class ViewBoxDialog extends React.Component<ViewBoxDialogProps, ViewBoxDi
           <div hidden={showDialog} className="fl w-100">
             <div className="flex justify-center bg-black-90 pa3">
               <div className="nowrap overflow-x-auto tr">
-                {images.map((image: Image, i: number) => 
+                {box.images && box.images.map((image: Image, i: number) => 
                   <img key={image.id} 
                     onClick={() => this.setState({selectedImage: i})} 
                     className="thumbnail" src={`https://i.imgur.com/${image.id}s.jpg`}

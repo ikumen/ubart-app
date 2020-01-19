@@ -64,9 +64,11 @@ export class Home extends React.Component<HomeProps, HomeState> {
   }
 
   showViewDialog = (boxId: string) => {
-    boxService.get(boxId).then(box => this.setState({
-      dialog: () => <ViewBoxDialog box={box} onClose={this.closeDialog} />
-    }));
+    boxService.get(boxId).then(box => {
+      this.setState({
+        dialog: () => <ViewBoxDialog box={box} onClose={this.closeDialog} />
+      })
+    });
   }
 
   handleAction = (action?: string, boxId?: string) => {

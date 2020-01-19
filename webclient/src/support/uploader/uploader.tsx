@@ -25,7 +25,7 @@ const upload = (item: UploadItem, boxId: string): Promise<Response> => {
   formData.append('album', 'dSygp44');
   formData.append('name', `${boxId}_1`);
 
-  return fetch('/services/upload', {
+  return fetch('/services/image/upload', {
     method: 'POST',
     body: formData
   });
