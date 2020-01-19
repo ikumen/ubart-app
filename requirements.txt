@@ -6,3 +6,4 @@ Flask-Caching==1.8.0
 google-cloud-pubsub==1.1.0
 google-auth==1.8.2
 google-api-python-client==1.7.11
+google-cloud-vision==0.41.0
