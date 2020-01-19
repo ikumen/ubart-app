@@ -4,4 +4,5 @@ handlers:
 - url: /static
   static_dir: webclient/dist/static
 - url: /*
+  secure: always
   script: auto
