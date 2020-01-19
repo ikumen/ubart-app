@@ -12,8 +12,8 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 
 @bp.route('/boxes', methods=['get'])
 def search_boxes():
-    latlng = request.args.get('geo', '').split(',')
-    if (len(lat_lng) != 2
+    latlng = [float(c) for c in request.args.get('geo', '').split(',')]
+    if (len(latlng) != 2
             or latlng[0] > 90 or latlng[0] < -90
             or latlng[1] > 180 or latlng[1] < -180):
         raise BadRequest('geo param is not valid (e.g, geo=lat,lng)')
@@ -25,7 +25,16 @@ def search_boxes():
 @bp.route('/boxes', methods=['post'])
 def create_box():
     data = request.get_json()
-    box = box_store.create(**data)
+    if 'geolocation' not in data:
+        raise BadRequest('geolocation is required')
+
+    geo = data['geolocation']
+    box = box_store.create(
+            address=data.get('address', ''),
+            description=data.get('description', ''),
+            lat=geo['lat'],
+            lng=geo['lng'])
+            
     return jsonify(box)
 
 

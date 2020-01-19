@@ -1,13 +1,10 @@
 import traceback
 import logging
 import json
-import base64
 
 from concurrent import futures
 from flask import current_app, Blueprint, request
-from google.auth.transport import requests
 from google.cloud import pubsub_v1
-from google.oauth2 import id_token
 from . import support
 
 

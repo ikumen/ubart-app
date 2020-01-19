@@ -2,7 +2,7 @@ import requests
 import logging
 
 from werkzeug.exceptions import Unauthorized
-from . import pubsub, support
+from . import support
 
 
 log = logging.getLogger(__name__)

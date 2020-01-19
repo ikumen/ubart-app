@@ -79,7 +79,7 @@ class EntityStore(metaclass=ABCMeta):
             raise ValueError("Required id is missing!")
         return self._client.key(self._kind, id)
 
-    def set_params(self, entity, kwargs):
+    def set_params(self, entity, **kwargs):
         """Set all kwargs that are supported by this entity 
         (e.g. support fields are defined under _fields).
         """
@@ -132,7 +132,7 @@ class EntityStore(metaclass=ABCMeta):
                 # No entity was found, just create a new entity to insert
                 entity = datastore.Entity(key=key, exclude_from_indexes=self._exclude_from_indexes)
             # We have an entity now (blank or pulled from db), let's update it
-            self.set_params(entity, kwargs)
+            self.set_params(entity, **kwargs)
             self._client.put(entity)
         return entity
 

@@ -1,6 +1,7 @@
 import requests
 import logging
 import json
+import base64
 
 from flask import Blueprint, request, current_app, jsonify
 from concurrent import futures

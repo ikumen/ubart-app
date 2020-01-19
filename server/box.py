@@ -17,8 +17,9 @@ class BoxStore(EntityStore):
         'description', 
         # string: location of box in freeform
         'address',
-        # dict: {lat, lng}
-        'geolocation', 
+        # geolocation
+        'lat',
+        'lng',
         # string: encoded geohash of given geolocation
         'geohash',
         # string: imgur image id used as the cover
@@ -26,28 +27,34 @@ class BoxStore(EntityStore):
         # array: list of image ids [imgur_id, ...] 
         'images'
     ]
-    _exclude_from_indexes = ['description', 'address', 'geolocation', 'cover', 'images']
+    _exclude_from_indexes = ['description', 'address', 'images']
 
-    def set_params(self, entity, kwargs):
+    def set_params(self, entity, **kwargs):
         if 'images' in kwargs:
-            images = entity.get('images', [])
-            images.extend(kwargs['images'])
-            kwargs['images'] = images
-            kwargs['cover'] = images[0]['id']
-        if 'geolocation' in kwargs:
-            kwargs['geohash'] = geohash.encode(**kwargs['geolocation'])
-        super().set_params(entity, kwargs)
+            kwargs['images'] = entity.get('images', []) + kwargs['images']
+        kwargs['cover'] = kwargs['images'][0]['id'] if kwargs.get('images') else ''
+        if 'lat' in kwargs and 'lng' in kwargs:
+            kwargs['geohash'] = geohash.encode(kwargs['lat'], kwargs['lng'])
+        super().set_params(entity, **kwargs)
+
+    def _from_image_entity(self, ie):
+        return {
+            'id': ie['id'],
+            'user': ie['user'],
+            'datetime': ie['datetime'],
+            'type': ie['type']}
 
     def from_entity(self, entity):
         return dict(
             id=entity.key.id,
-            address=entity['address'],
+            address=entity.get('address', ''),
             description=entity.get('description', None),
-            images=entity.get('images', []),
+            images=[self._from_image_entity(i) for i in entity.get('images', [])],
             cover=entity.get('cover', None),
-            geolocation=dict(
-                lat=entity['geolocation']['lat'],
-                lng=entity['geolocation']['lng']))        
+            geolocation={
+                'lat': entity['lat'],
+                'lng': entity['lng']
+            })        
 
     def search_by_geolocation(self, geolocation):
         """Find all matching boxes near the given lat/lng.
@@ -69,6 +76,7 @@ class BoxStore(EntityStore):
         results = []
         for h in hashes:
             query = self._create_query()
+            query.projection = ['lat', 'lng', 'cover']
             self._apply_filters(query, filters=[('geohash', '=', h)])
             for entity in list(query.fetch()):
                 results.append(self.from_entity(entity))
