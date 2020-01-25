@@ -1,0 +1,4 @@
+DATASTORE_HOST=localhost
+DATASTORE_PORT=8087
+DATASTORE_DATA="./.data"
+UBARTAPP_CREDENTIALS=~/.config/gcloud/ubart-auth-firebase.json
